@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relayy Mortgage Payment Calculator</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        h1, h2 {
+            color: #ffcc00;
+        }
+        form {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 0 auto;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #e6b800;
+        }
+        .slider-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .chart-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Relayy Mortgage Payment Calculator</h1>
+    <form method="post">
+    <label for="loan_amt">Loan Amount:</label>
+    <input type="number" id="loan_amt" name="loan_amt"
+           value="{{ default_loan_amt }}" required><br><br>
+
+    <label for="interest_val">Interest Rate (%):</label>
+    <input type="number" id="interest_val" name="interest_val" step="0.01"
+           value="{{ default_interest_val }}" required><br><br>
+
+    <label for="down_pmt_pct">Down Payment Percentage:</label>
+    <input type="number" id="down_pmt_pct" name="down_pmt_pct" min="0" max="98"
+           value="{{ default_down_pmt_pct }}" required><br><br>
+
+    <button type="submit">Calculate</button>
+</form>
+
+    {% if result %}
+        <h2>Results</h2>
+        <p>Regular Mortgage Payment: {{ result['Mortgage Payment'] }}</p>
+        <p>Minimum Payment: {{ result['Minimum Payment'] }}</p>
+        <p>Maximum Payment: {{ result['Maximum Payment'] }}</p>
+
+        <div class="slider-container">
+            <label for="payment_slider">Select a Payment:</label>
+            <input type="range" id="payment_slider" name="payment_slider" min="{{ result['Minimum Payment'] }}" max="{{ result['Maximum Payment'] }}" step="0.01" value="{{ result['Minimum Payment'] }}">
+            <p>Selected Payment: <span id="selected_payment">{{ result['Minimum Payment'] }}</span></p>
+            <button id="generate_chart">Generate Equity Chart</button>
+        </div>
+
+        <div class="chart-container" id="chart_container" style="display: none;">
+            <h2>Equity Chart</h2>
+            <img id="equity_chart" src="" alt="Equity Chart">
+        </div>
+    {% elif error %}
+        <h2>Error</h2>
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <script>
+        const slider = document.getElementById('payment_slider');
+        const selectedPaymentSpan = document.getElementById('selected_payment');
+        const generateChartButton = document.getElementById('generate_chart');
+        const chartContainer = document.getElementById('chart_container');
+        const equityChart = document.getElementById('equity_chart');
+
+        slider.addEventListener('input', () => {
+            selectedPaymentSpan.textContent = slider.value;
+        });
+
+        generateChartButton.addEventListener('click', () => {
+            const loanAmt = {{ result['LoanAmount'] }};
+            const interestVal = {{ result['InterestRate'] }};
+            const selectedPayment = slider.value;
+
+            fetch('/chart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ loan_amt: loanAmt, interest_val: interestVal, selected_payment: selectedPayment })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.chart_url) {
+                    chartContainer.style.display = 'block';
+                    equityChart.src = 'data:image/png;base64,' + data.chart_url;
+                } else {
+                    alert('Error generating chart: ' + data.error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
