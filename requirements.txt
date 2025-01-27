@@ -1,0 +1,26 @@
+blinker @ file:///home/conda/feedstock_root/build_artifacts/blinker_1731096409132/work
+click @ file:///home/conda/feedstock_root/build_artifacts/click_1734858813237/work
+contourpy @ file:///Users/runner/miniforge3/conda-bld/contourpy_1731428368116/work
+cycler @ file:///home/conda/feedstock_root/build_artifacts/cycler_1733332471406/work
+Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1731556349671/work
+fonttools @ file:///Users/runner/miniforge3/conda-bld/fonttools_1735335839022/work
+importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/importlib-metadata_1733223117029/work
+itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1733308265247/work
+Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1734823942230/work
+kiwisolver @ file:///Users/runner/miniforge3/conda-bld/kiwisolver_1725459273855/work
+MarkupSafe @ file:///Users/runner/miniforge3/conda-bld/markupsafe_1733219705194/work
+matplotlib==3.10.0
+munkres==1.1.4
+numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1734904312920/work/dist/numpy-2.2.1-cp310-cp310-macosx_11_0_arm64.whl#sha256=7e9c7ba38b286bd6240dd0f0e25dcba8ccabbc1c3b0f15fc0db8979d72441da9
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1733203243479/work
+pandas @ file:///Users/runner/miniforge3/conda-bld/pandas_1726878435917/work
+pillow @ file:///Users/runner/miniforge3/conda-bld/pillow_1735929731714/work
+pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1735698276679/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1733215673016/work
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1706886791323/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1733380938961/work
+tornado @ file:///Users/runner/miniforge3/conda-bld/tornado_1732615966791/work
+tzdata @ file:///home/conda/feedstock_root/build_artifacts/python-tzdata_1733235305708/work
+unicodedata2 @ file:///Users/runner/miniforge3/conda-bld/unicodedata2_1736692581912/work
+Werkzeug @ file:///home/conda/feedstock_root/build_artifacts/werkzeug_1733160440960/work
+zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1732827521216/work
