@@ -5,7 +5,7 @@ FROM python:3.10
 WORKDIR /app
 
 # Copy the current directory contents into the container
-COPY . /app
+COPY . .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -14,4 +14,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Command to run the Flask app
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+CMD [ "python", "app.py"]
