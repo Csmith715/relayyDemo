@@ -103,6 +103,7 @@ def generate_equity_chart(loan_amt, interest_rate, selected_payment):
     plt.title('Equity & Appreciation Over 5 Years')
     plt.xlabel('Year')
     plt.ylabel('Equity & Appreciation ($)')
+    plt.legend()
 
     # Save plot to a string buffer
     buf = io.BytesIO()

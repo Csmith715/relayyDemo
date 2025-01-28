@@ -77,11 +77,11 @@
             <label for="payment_slider">Select a Payment:</label>
             <input type="range" id="payment_slider" name="payment_slider" min="{{ result['Minimum Payment'] }}" max="{{ result['Maximum Payment'] }}" step="0.01" value="{{ result['Minimum Payment'] }}">
             <p>Selected Payment: <span id="selected_payment">{{ result['Minimum Payment'] }}</span></p>
-            <button id="generate_chart">Generate Equity Chart</button>
+            <button id="generate_chart">Generate Equity-Appreciation Chart</button>
         </div>
 
         <div class="chart-container" id="chart_container" style="display: none;">
-            <h2>Equity Chart</h2>
+            <h2>Equity & Appreciation Chart</h2>
             <img id="equity_chart" src="" alt="Equity Chart">
         </div>
     {% elif error %}
