@@ -63,28 +63,34 @@ def get_equity(loan_val, interest):
 def calculate_payment_range(loan_amt: float, interest_val: float, down_pmt_pct: int):
     equity_list = []
     mortgage_payments = []
+    pmi_vals = []
     alow = 0.0159
     ahigh = 0.0577
     ap_pct = 0.10  # percent of anticipated appreciation to apply to payment
     eq_pct = 0.40  # percent of expected equity to apply to payment
     for r in range(99):
         lv = loan_amt - loan_amt * (r / 100)
+        # 0.7% PMI
+        pmi = 0.007/12*lv if (loan_amt * (r / 100)) / loan_amt < 0.20 else 0
         mp = calculate_mortgage_payment(lv, interest_val, 30)
         equity_list.append(get_equity(lv, interest_val))
         mortgage_payments.append(mp)
+        pmi_vals.append(pmi)
 
     equity_appreciation_low = [((e * eq_pct) + (loan_amt * alow * ap_pct)) / 12 for e in equity_list]
     equity_appreciation_high = [((e * eq_pct) + (loan_amt * ahigh * ap_pct)) / 12 for e in equity_list]
     min_pmt = [p - e for p, e in zip(mortgage_payments, equity_appreciation_high)]
     max_pmt = [p + e for p, e in zip(mortgage_payments, equity_appreciation_low)]
-    # Add in 0.07 of loan amount/12 for PMI, and 1.1 pct property tax
-    pmi_rate = 0.07/12
-    property_tax = 0.01/12
-    mortgage_payments = [mort*(1+pmi_rate)*(1+property_tax) for mort in mortgage_payments]
+    property_tax = 0.011/12*loan_amt
+    base_insurance = 167
+    # mortgage_payments = [mort*(1+property_tax) for mort in mortgage_payments]
+    mortgage_payments = [m+v+base_insurance+property_tax for m, v in zip(mortgage_payments, pmi_vals)]
     mdf = pd.DataFrame({
         'Mortgage Payment': [round(mo, 2) for mo in mortgage_payments],
         'min pmt': [round(mip, 2) for mip in min_pmt],
-        'max pmt': [round(mxp, 2) for mxp in max_pmt]
+        'max pmt': [round(mxp, 2) for mxp in max_pmt],
+        'equity_low': equity_appreciation_low,
+        'equity_high': equity_appreciation_high
     })
 
     return mdf.iloc[down_pmt_pct]
@@ -147,6 +153,7 @@ def home():
 
             # Call the calculate_payment_range function
             result = calculate_payment_range(loan_amt, interest_val, down_pmt_pct)
+            # print(result['equity_low'], result['equity_high'])
 
             # Format the result as a dictionary to display on the page
             result_dict = {
@@ -162,7 +169,7 @@ def home():
             return render_template('index.html', error=str(e))
 
     # For GET requests, pass a default empty result and no error
-    return render_template('index.html', result=None, error=None, default_loan_amt=420000, default_interest_val=3.5, default_down_pmt_pct=10)
+    return render_template('index.html', result=None, error=None, default_loan_amt=420000, default_interest_val=5.5, default_down_pmt_pct=7)
 
 @app.route('/chart', methods=['POST'])
 def chart():
